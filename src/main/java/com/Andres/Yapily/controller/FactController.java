@@ -5,16 +5,20 @@ import com.Andres.Yapily.entity.Response;
 import com.Andres.Yapily.entity.Status;
 import com.Andres.Yapily.service.ApiConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api")
 public class FactController {
 
 
@@ -22,7 +26,7 @@ public class FactController {
     public ApiConsumer apiConsumer;
 
     @GetMapping(path = "/status",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Status getStatus() {
+    public ResponseEntity<Status> getStatus(HttpServletResponse response) {
         Status status = new Status();
         Response resp = new Response();
         int uniqueValue = apiConsumer.getFactSize();
@@ -37,7 +41,7 @@ public class FactController {
             status.setStatus("FAILED");
             status.setResponse(resp);
         }
-        return status;
+        return ResponseEntity.ok(status);
     }
 
     @GetMapping(path = "/facts",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -45,7 +49,24 @@ public class FactController {
         return apiConsumer.getUniqueId();
     }
     @GetMapping(path = "/facts/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Fact getFactById(@PathVariable String id) {
-        return apiConsumer.getFactById(id);
+    @ResponseStatus(HttpStatus.OK)
+    public Fact getFactById(@PathVariable String id, @RequestParam(required = false) String yandexKey, @RequestParam(required = false) String lang) {
+        Fact translatedFact = apiConsumer.getFactById(id);
+        System.out.println(yandexKey);
+        System.out.println(lang);
+        if (yandexKey != null && lang != null) {
+
+            List<String> phrase = new ArrayList<>();
+            String fromLang = translatedFact.getLanguage();
+            phrase.add(translatedFact.getText());
+            System.out.println("text to translate: " + phrase.toString());
+            //textp traducido
+            String transText = apiConsumer.translate(yandexKey, phrase, fromLang + "-" + lang);
+            System.out.println("translated text: " + transText);
+            translatedFact.setText(transText);
+            translatedFact.setLanguage(lang);
+        }
+
+        return translatedFact;
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.UnsupportedMediaTypeException;
 import org.springframework.web.reactive.function.client.WebClient;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -23,6 +24,7 @@ import java.util.*;
 import static java.lang.System.out;
 
 @SpringBootApplication
+@EnableSwagger2
 public class YapilyApplication {
 
 	//private static final Logger log = LoggerFactory.getLogger(YapilyApplication.class);
