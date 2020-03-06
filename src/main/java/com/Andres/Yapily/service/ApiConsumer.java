@@ -1,6 +1,5 @@
 package com.Andres.Yapily.service;
 
-
 import com.Andres.Yapily.entity.Fact;
 import com.Andres.Yapily.entity.Translation;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -13,10 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
-
 import java.time.ZonedDateTime;
 import java.util.*;
-
 import static com.Andres.Yapily.constants.Constants.BASE_URL;
 import static com.Andres.Yapily.constants.Constants.YANDEX_API;
 
@@ -117,22 +114,6 @@ public class ApiConsumer {
 
     public Fact getFactById(String id){
         return uniqueRecords.get(id);
-    }
-
-    public static String printObject(Fact object){
-
-        ObjectMapper ow = new ObjectMapper();
-
-        ow.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        String jsonData = null;
-
-        try {
-            jsonData = ow.writerWithDefaultPrettyPrinter().writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        return jsonData;
     }
 
 
