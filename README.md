@@ -72,3 +72,6 @@ To install the dependencies, just go to your pom.xml and add the following depen
   ## Enpoints available:
   
   <img src="image/swagger.png">
+  ## How to Run the app:
+  Just clone the repository using git clone https://github.com/Blurryface123/Yapily.git and start playing with it.
+  This app uses Oauth2 so you'll have to log in with your Github Account.
