@@ -30,7 +30,7 @@ public class ApiConsumer {
         params.add("language","en");
         WebClient webClient = createWebClient(BASE_URL);
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             Fact fact = getFactResponse(webClient,params,"random","json");
             uniqueRecords.put(fact.getId(),fact);
         }
